@@ -1,6 +1,7 @@
 
 plugins {
     id 'groovy'
+    id 'maven'
     id "com.gradle.plugin-publish" version "0.9.1"
 }
 
@@ -41,4 +42,11 @@ pluginBundle {
       displayName = 'Gradle Config plugin'
     }
   }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.version = project.version
+        pom.artifactId = 'gradle-config'
+    }
 }
