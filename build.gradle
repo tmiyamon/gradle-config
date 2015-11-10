@@ -28,6 +28,7 @@ dependencies {
     compile gradleApi()
     compile localGroovy()
     provided 'com.android.tools.build:gradle:1.+'
+    compile 'org.yaml:snakeyaml:1.14'
 }
 
 pluginBundle {
