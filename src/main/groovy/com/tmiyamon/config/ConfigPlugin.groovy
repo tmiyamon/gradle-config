@@ -13,6 +13,11 @@ class ConfigPlugin implements Plugin<Project> {
 
         project.afterEvaluate {
             project.plugins.withId('com.android.application') {
+                project.android.applicationVariants.all  {
+                    println(it.name)
+                    println(it.flavorName)
+                    println('')
+                }
                 def yaml = new Yaml()
                 project.android.productFlavors.each { productFlavor ->
                     def f = project.file("config/${productFlavor.name}.yml")

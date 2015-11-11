@@ -1,6 +1,12 @@
 package com.tmiyamon.config
 
 class SettingsClassGenerator {
+    public static String generate(Map<String, Object> parsedYaml) {
+        def ast = buildAST(parsedYaml)
+
+
+    }
+
     public static SettingsElement buildAST(Map<String, Object> parsedYaml) {
         new SettingsRootClass(parsedYaml.collect { internalBuildAST([it.key], it.value).toTopLevel() })
     }
@@ -15,7 +21,7 @@ class SettingsClassGenerator {
             return new SettingsField(keys.last(), o)
         } else if (o instanceof Map<String, Object>) {
             def children = (o as Map<String, Object>).collect { internalBuildAST(keys + [it.key] as List, it.value)}
-            return new SettingsClass(keys.last(), children)
+            return new SettingsClass(keys, children)
         }
 
         throw new RuntimeException("Not supported type: ${o.getClass()}")

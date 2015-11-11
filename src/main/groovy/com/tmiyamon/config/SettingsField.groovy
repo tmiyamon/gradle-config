@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 class SettingsField implements SettingsElement {
     String key;
     Object value;
-    List<String> modifiers = ['final']
+    boolean isTopLevel
 
 
     SettingsField(String key, Object value) {
@@ -13,8 +13,14 @@ class SettingsField implements SettingsElement {
         this.value = value
     }
 
+    @Override
     String typeString() {
         value.getClass().getName()
+    }
+
+    @Override
+    String name() {
+        key
     }
 
     String valueString() {
@@ -35,12 +41,21 @@ class SettingsField implements SettingsElement {
 
     @Override
     String generateSource() {
-        "public ${modifiers.join(' ')} ${typeString()} ${key} = ${valueString()};"
+        if (isTopLevel) {
+            "public static final ${typeString()} ${name()} = ${valueString()};"
+        } else {
+            valueString()
+        }
     }
 
     @Override
     SettingsElement toTopLevel() {
-        modifiers = ['static final']
+        this.isTopLevel = true
         this
+    }
+
+    @Override
+    void collectClassSources(Map<String, String> classSources) {
+
     }
 }

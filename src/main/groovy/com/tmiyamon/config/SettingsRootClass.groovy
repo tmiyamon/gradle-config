@@ -9,13 +9,35 @@ class SettingsRootClass implements SettingsElement {
 
     @Override
     String generateSource() {
+        def classSources = [:]
+        collectClassSources(classSources)
+
+        def fieldsString = children.collect { it.generateSource() }.join("\n")
+        def classesString = classSources.values().join("\n")
+
         "public final class Settings {\n" +
-            children.collect { it.generateSource() }.join("\n") + "\n" +
+            "${fieldsString}\n" +
+            "${classesString}\n" +
         "}"
     }
 
     @Override
     SettingsElement toTopLevel() {
         return this
+    }
+
+    @Override
+    String typeString() {
+        return null
+    }
+
+    @Override
+    String name() {
+        return null
+    }
+
+    @Override
+    void collectClassSources(Map<String, String> classSources) {
+        children.each { it.collectClassSources(classSources) }
     }
 }
