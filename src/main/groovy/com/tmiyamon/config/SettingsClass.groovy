@@ -12,8 +12,7 @@ class SettingsClass implements SettingsElement {
 
     @Override
     String typeString() {
-//        Util.camelize(key, true)
-        keys.join("_")
+        Util.className(keys.join('_'))
     }
 
     @Override

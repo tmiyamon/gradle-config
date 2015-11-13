@@ -26,8 +26,13 @@ class SettingsClassGenerator {
                 throw new RuntimeException("Not supported list with mixed type: $childClasses")
             }
 
-            def childClass = childClasses.first()
-            def childKeys = (childClass instanceof Map) ? keys[0..keys.size()-1] + ["${keys.last()}Element"] : keys
+            def childKeys = keys
+            if (list.first() instanceof Map) {
+                childKeys = ["${keys.last()}_element"]
+                if(keys.size() > 1) {
+                    childKeys = keys[0..-2] + childKeys
+                }
+            }
 
             def children = list.collect { internalBuildAST(childKeys, it)}
             return new SettingsList(keys, children)
