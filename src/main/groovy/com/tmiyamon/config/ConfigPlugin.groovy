@@ -6,7 +6,6 @@ import org.yaml.snakeyaml.Yaml
 import com.android.build.gradle.internal.dsl.ProductFlavor
 
 class ConfigPlugin implements Plugin<Project> {
-    private static final String CLASS_TEMPLATE = "public final class <%= className %> { <%= contents %> }";
 
     @Override
     void apply(Project project) {
@@ -19,22 +18,24 @@ class ConfigPlugin implements Plugin<Project> {
                     println('')
                 }
                 def yaml = new Yaml()
-                project.android.productFlavors.each { productFlavor ->
-                    def f = project.file("config/${productFlavor.name}.yml")
-                    if (f.isFile()) {
-                        f.withReader {
-                            def y = yaml.load(it)
-                            //setupBuildConfigField(productFlavor, [], y)
 
-                            println('##########')
-                            println(SettingsClassGenerator.buildAST(y as Map<String, Object>).generateSource())
-                        }
-                    } else {
-                        println("Not found $f")
+                def defaultConfig = loadIfExist(yaml, project.file("config/default.yml"))
+
+                project.android.productFlavors.each { productFlavor ->
+                    def productFlavorConfig = loadIfExist(yaml, project.file("config/${productFlavor.name}.yml"))
+
+                    def config = Util.deepMerge(defaultConfig, productFlavorConfig)
+
+                    if (!config.isEmpty()) {
+                        println(SettingsClassGenerator.buildAST(config).generateSource())
                     }
                 }
             }
         }
+    }
+
+    public Map loadIfExist(Yaml yaml, File f) {
+        f.isFile() ? f.withReader { yaml.load(it) as Map } : [:]
     }
 
     static String defaultKey(List<String> keys) {
