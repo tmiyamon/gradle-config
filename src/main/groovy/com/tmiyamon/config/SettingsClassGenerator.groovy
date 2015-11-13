@@ -19,6 +19,18 @@ class SettingsClassGenerator {
             o instanceof Boolean
         ) {
             return new SettingsField(keys.last(), o)
+        } else if (o instanceof List) {
+            def list = (o as List)
+            def childClasses = list.collect { it.getClass() }.unique()
+            if (childClasses.size() != 1) {
+                throw new RuntimeException("Not supported list with mixed type: $childClasses")
+            }
+
+            def childClass = childClasses.first()
+            def childKeys = (childClass instanceof Map) ? keys[0..keys.size()-1] + ["${keys.last()}Element"] : keys
+
+            def children = list.collect { internalBuildAST(childKeys, it)}
+            return new SettingsList(keys, children)
         } else if (o instanceof Map<String, Object>) {
             def children = (o as Map<String, Object>).collect { internalBuildAST(keys + [it.key] as List, it.value)}
             return new SettingsClass(keys, children)

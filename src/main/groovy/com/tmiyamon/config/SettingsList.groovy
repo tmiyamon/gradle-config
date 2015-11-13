@@ -1,36 +1,50 @@
 package com.tmiyamon.config
 
-class SettingsList implements SettingsElement {
-    String key
-    List<SettingsElement> children
-    List<String> modifiers = ['final']
+import sun.security.pkcs11.wrapper.PKCS11RuntimeException
 
-    SettingsList(String key, List<SettingsElement> children) {
-        this.key = key
+class SettingsList implements SettingsElement {
+    List<String> keys
+    List<SettingsElement> children
+    boolean isTopLevel
+
+    SettingsList(List<String> keys, List<SettingsElement> children) {
+        this.keys = keys
         this.children = children
     }
 
     String typeString() {
-        "ArrayList<${key}Element>"
+        def childTypes = children.collect { it.typeString() }.unique()
+        if (childTypes.size() != 1) {
+            throw new RuntimeException("Not supported lis with mixed type: $childTypes")
+        }
+        "ArrayList<${childTypes.first()}>"
     }
 
     String name() {
-        key
+        keys.last()
+    }
+
+    String valueString() {
+        "new ${typeString()}(){{ ${children.collect{ "add(${it.generateSource()});" }.join((''))} }}"
     }
 
     @Override
     String generateSource() {
-        "public ${modifiers.join(' ')} ${typeString()} ${name()} = new ${typeString()}();"
+        if (isTopLevel) {
+            "public static final ${typeString()} ${name()} = ${valueString()};"
+        } else {
+            valueString()
+        }
     }
 
     @Override
     SettingsElement toTopLevel() {
-        modifiers = ['static final']
+        this.isTopLevel = true
         this
     }
 
     @Override
     void collectClassSources(Map<String, String> classSources) {
-
+        children.each { it.collectClassSources(classSources) }
     }
 }

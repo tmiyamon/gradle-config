@@ -7,7 +7,6 @@ class SettingsField implements SettingsElement {
     Object value;
     boolean isTopLevel
 
-
     SettingsField(String key, Object value) {
         this.key = key
         this.value = value
