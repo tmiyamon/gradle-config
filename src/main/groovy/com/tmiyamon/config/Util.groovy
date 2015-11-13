@@ -8,7 +8,13 @@ class Util {
 	}
 
 	public static String className(String str) {
-		return str.split('_').collect { it[0].toUpperCase() + it[1..-1] }.join()
+		return str.split('_').collect {
+			def camelized = it[0].toUpperCase()
+			if (it.length() > 1) {
+				camelized += it[1..-1]
+			}
+			camelized
+		}.join('')
 	}
 
 	public static String capitalize(String a){
