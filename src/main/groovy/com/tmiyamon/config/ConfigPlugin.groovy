@@ -18,16 +18,19 @@ class ConfigPlugin implements Plugin<Project> {
                     println('')
                 }
                 def yaml = new Yaml()
+                def configDir = project.file("config")
 
-                def defaultConfig = loadIfExist(yaml, project.file("config/default.yml"))
+                if (configDir.isDirectory()) {
+                    def defaultConfig = loadIfExist(yaml, new File(configDir, "default.yml"))
 
-                project.android.productFlavors.each { productFlavor ->
-                    def productFlavorConfig = loadIfExist(yaml, project.file("config/${productFlavor.name}.yml"))
+                    project.android.productFlavors.each { productFlavor ->
+                        def productFlavorConfig = loadIfExist(yaml, new File(configDir, "${productFlavor.name}.yml"))
 
-                    def config = Util.deepMerge(defaultConfig, productFlavorConfig)
+                        def config = Util.deepMerge(defaultConfig, productFlavorConfig)
 
-                    if (!config.isEmpty()) {
-                        println(SettingsClassGenerator.buildAST(config).generateSource())
+                        if (!config.isEmpty()) {
+                            println(SettingsClassGenerator.buildAST(config).generateSource())
+                        }
                     }
                 }
             }
