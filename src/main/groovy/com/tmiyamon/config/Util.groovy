@@ -1,5 +1,7 @@
 package com.tmiyamon.config
 
+import org.gradle.api.Project
+
 class Util {
 	public static String camelize(String cmdName, boolean firstUpper = false) {
 
@@ -37,6 +39,10 @@ class Util {
 			return onto
 		}
 		return overrides.inject(onto, { acc, override -> deepMerge(acc, override ?: [:]) })
+	}
+
+	public static String pathJoin(String...paths) {
+		paths.join(File.separator)
 	}
 }
 

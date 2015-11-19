@@ -9,14 +9,9 @@ class ConfigPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-
         project.afterEvaluate {
             project.plugins.withId('com.android.application') {
-                project.android.applicationVariants.all  {
-                    println(it.name)
-                    println(it.flavorName)
-                    println('')
-                }
+                def packageName = getPackageName(project)
                 def yaml = new Yaml()
                 def configDir = project.file("config")
 
@@ -24,12 +19,20 @@ class ConfigPlugin implements Plugin<Project> {
                     def defaultConfig = loadIfExist(yaml, new File(configDir, "default.yml"))
 
                     project.android.productFlavors.each { productFlavor ->
-                        def productFlavorConfig = loadIfExist(yaml, new File(configDir, "${productFlavor.name}.yml"))
+                        def name = productFlavor.name
+
+                        def productFlavorConfig = loadIfExist(yaml, new File(configDir, "${name}.yml"))
 
                         def config = Util.deepMerge(defaultConfig, productFlavorConfig)
 
                         if (!config.isEmpty()) {
-                            println(SettingsClassGenerator.buildAST(config).generateSource())
+                            def source = SettingsClassGenerator.buildAST(config).generateSource()
+
+                            project.android.sourceSets[name].java.srcDirs += getSrcDirPath(name)
+
+                            def outputDir = project.file(getOutputDirPath(name, packageName))
+                            outputDir.mkdirs()
+                            new File(outputDir, 'Settings.java').text = "package ${packageName};\n" + source
                         }
                     }
                 }
@@ -37,7 +40,19 @@ class ConfigPlugin implements Plugin<Project> {
         }
     }
 
-    public Map loadIfExist(Yaml yaml, File f) {
+    static public String getOutputDirPath(String productFlavorName, String packageName) {
+        Util.pathJoin(getSrcDirPath(productFlavorName), *packageName.split("\\."))
+    }
+
+    static public String getSrcDirPath(String productFlavorName) {
+        Util.pathJoin('build', 'generated', 'source', 'settings', productFlavorName)
+    }
+
+    static public String getPackageName(Project project) {
+        new XmlParser().parse(project.file(Util.pathJoin('src', 'main', 'AndroidManifest.xml'))).attribute('package')
+    }
+
+    static public Map loadIfExist(Yaml yaml, File f) {
         f.isFile() ? f.withReader { yaml.load(it) as Map } : [:]
     }
 
