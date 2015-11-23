@@ -1,4 +1,4 @@
-package com.tmiyamon.config
+package com.tmiyamon.config.ast
 
 interface SettingsElement {
     String generateSource()

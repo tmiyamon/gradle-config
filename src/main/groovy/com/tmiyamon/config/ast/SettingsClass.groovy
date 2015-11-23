@@ -1,4 +1,6 @@
-package com.tmiyamon.config
+package com.tmiyamon.config.ast
+
+import com.tmiyamon.config.Util
 
 class SettingsClass implements SettingsElement {
     List<String> keys

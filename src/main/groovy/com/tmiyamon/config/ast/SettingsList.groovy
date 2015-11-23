@@ -1,6 +1,4 @@
-package com.tmiyamon.config
-
-import sun.security.pkcs11.wrapper.PKCS11RuntimeException
+package com.tmiyamon.config.ast
 
 class SettingsList implements SettingsElement {
     List<String> keys

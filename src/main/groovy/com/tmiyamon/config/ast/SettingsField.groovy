@@ -1,6 +1,4 @@
-package com.tmiyamon.config
-
-import java.text.SimpleDateFormat
+package com.tmiyamon.config.ast
 
 class SettingsField implements SettingsElement {
     String key;

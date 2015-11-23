@@ -1,12 +1,12 @@
 package com.tmiyamon.config
 
+import com.tmiyamon.config.ast.SettingsClass
+import com.tmiyamon.config.ast.SettingsElement
+import com.tmiyamon.config.ast.SettingsField
+import com.tmiyamon.config.ast.SettingsList
+import com.tmiyamon.config.ast.SettingsRootClass
+
 class SettingsClassGenerator {
-    public static String generate(Map<String, Object> parsedYaml) {
-        def ast = buildAST(parsedYaml)
-
-
-    }
-
     public static SettingsElement buildAST(Map<String, Object> parsedYaml) {
         new SettingsRootClass(parsedYaml.collect { internalBuildAST([it.key], it.value).toTopLevel() })
     }

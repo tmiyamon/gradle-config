@@ -1,4 +1,4 @@
-package com.tmiyamon.config
+package com.tmiyamon.config.ast
 
 class SettingsRootClass implements SettingsElement {
     List<SettingsElement> children
