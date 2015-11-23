@@ -1,6 +1,6 @@
 # Gradle Config Plugin
 
-This plugin helps you to easily handle product flavor specific settings with yaml format.
+This plugin helps you to easily handle productFlavor and buildConfig specific settings with yaml format.
 
 ## Usage
 
@@ -35,13 +35,24 @@ Settings.entry
 ```
 config/default.yml
 config/${productFlavor}.yml
+config/${buildType}.yml
 ```
 
-For example, when you have product flavor ```dev```,
-```
-productFlavor {
-  dev
-}
-```
+The lower one overrides upper one deeply.
 
-the ```Settings``` class will be compiled from ```config/dev.yml``` with overriding ```config/default.yml```.
+## License
+```
+Copyright 2015 Takuya Miyamoto
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
