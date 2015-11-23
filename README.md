@@ -7,20 +7,24 @@ This plugin helps you to easily handle variant specific settings with yaml forma
 ```groovy
 buildscript {
   repositories {
-    jcenter()
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
   }
-
   dependencies {
-    classpath 'com.tmiyamon:gradle-config:0.1.0'
+    classpath "gradle.plugin.com.tmiyamon:gradle-config:0.1"
   }
-}
-
-repositories {
-  jcenter()
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.tmiyamon.config'
+apply plugin: "com.tmiyamon.config"
+```
+
+Build script snippet for new, incubating, plugin mechanism introduced in Gradle 2.1:
+```
+plugins {
+  id "com.tmiyamon.config" version "0.1"
+}
 ```
 
 ## Settings class
@@ -146,6 +150,12 @@ Also, the list of map are supported.
 ```java
 List<Settings.ListOfMapEntryElement> entries = Settings.list_of_map_entry;
 ```
+
+## Known issues
+
+### Not found Settings class
+
+Sometimes Android Studio does not detect generated Settings class. When you fact to this problem, `Refresh all Gradle projects` in the right pane of Android Studio may be helpful.
 
 ## License
 ```
