@@ -15,7 +15,7 @@ class SettingsList implements SettingsElement {
         if (childTypes.size() != 1) {
             throw new RuntimeException("Not supported lis with mixed type: $childTypes")
         }
-        "ArrayList<${childTypes.first()}>"
+        "java.util.ArrayList<${childTypes.first()}>"
     }
 
     String name() {
