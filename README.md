@@ -12,7 +12,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.tmiyamon:gradle-config:0.1"
+    classpath "gradle.plugin.com.tmiyamon:gradle-config:0.1.1"
   }
 }
 
@@ -23,7 +23,7 @@ apply plugin: "com.tmiyamon.config"
 Build script snippet for new, incubating, plugin mechanism introduced in Gradle 2.1:
 ```
 plugins {
-  id "com.tmiyamon.config" version "0.1"
+  id "com.tmiyamon.config" version "0.1.1"
 }
 ```
 
