@@ -1,5 +1,7 @@
-package com.tmiyamon.config
+package com.tmiyamon.config.task
 
+import com.tmiyamon.config.SettingsClassGenerator
+import com.tmiyamon.config.Util
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles

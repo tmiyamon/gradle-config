@@ -45,7 +45,7 @@ class SettingsClass implements SettingsElement {
     @Override
     void collectClassSources(Map<String, String> classSources) {
         classSources[typeString()] =
-            "static final class ${typeString()} { ${fieldsString()} ${constructorString()} }"
+            "public static final class ${typeString()} { ${fieldsString()} ${constructorString()} }"
 
         children.each { it.collectClassSources(classSources) }
     }

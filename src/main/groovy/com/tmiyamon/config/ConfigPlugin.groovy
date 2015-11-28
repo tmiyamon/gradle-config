@@ -1,6 +1,6 @@
 package com.tmiyamon.config
 
-import org.gradle.api.DefaultTask
+import com.tmiyamon.config.task.GenerateSettingsTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import com.android.build.gradle.api.BaseVariant
