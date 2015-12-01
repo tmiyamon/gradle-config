@@ -47,11 +47,18 @@ Config entries are generated from:
 
 ```
 config/default.yml
+config/default_secret.yml
 config/${productFlavor}.yml
+config/${productFlavor}_secret.yml
 config/${buildType}.yml
+config/${buildType}_secret.yml
 ```
 
-The lower one overwrites upper one deeply.
+The lower one overwrites upper one deeply. The purpose of loading settings files with suffix `_secret` is to avoid to commit the secret files to remote repository. If you want to use this feature, don't forget to include those files to your `.gitignore`:
+
+```
+*_secret.yml
+```
 
 
 ## Accessing Configuration Settings
