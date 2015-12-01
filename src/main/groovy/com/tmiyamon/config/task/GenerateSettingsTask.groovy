@@ -25,7 +25,7 @@ public class GenerateSettingsTask extends DefaultTask {
 
     @InputFiles
     def settingsFiles() {
-        ['default', flavorName, buildTypeName].collect {
+        ['default', flavorName, buildTypeName].collect { [it, "${it}_secret"] }.flatten().collect {
             project.file(Util.pathJoin('config', "${it}.yml"))
         }
     }
