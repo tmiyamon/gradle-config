@@ -23,6 +23,7 @@ class ConfigPlugin implements Plugin<Project> {
                     }
 
                 variant.registerJavaGeneratingTask(task, task.outputDir())
+                android.sourceSets[variant.name].java.srcDirs += [task.outputDir()]
             }
         }
     }
