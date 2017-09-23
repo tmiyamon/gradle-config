@@ -1,0 +1,56 @@
+plugins {
+    id 'groovy'
+    id 'maven'
+    id "com.gradle.plugin-publish" version "0.9.1"
+}
+
+group 'com.tmiyamon'
+version pluginVersion
+
+sourceCompatibility = 1.6
+targetCompatibility = "1.6"
+
+repositories {
+    jcenter()
+}
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    provided 'com.android.tools.build:gradle:2.+'
+    compile 'org.yaml:snakeyaml:1.14'
+}
+
+pluginBundle {
+    website = 'https://github.com/tmiyamon/gradle-config'
+    vcsUrl = 'https://github.com/tmiyamon/gradle-config'
+    description = 'Gradle plugin to add multi-variants yaml settings to Android.'
+    tags = ['gradle', 'plugin', 'android']
+
+    plugins {
+        configPlugin {
+            id = 'com.tmiyamon.config'
+            displayName = 'Gradle Config plugin'
+        }
+    }
+}
+
+install {
+    repositories {
+        mavenDeployer {
+            repository(url: 'file:' + tempRepo.absolutePath)
+            pom.version = project.version
+            pom.artifactId = 'gradle-config'
+        }
+    }
+}

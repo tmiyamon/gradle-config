@@ -39,3 +39,6 @@ bin
 
 .java-version
 *.hprof
+
+temp_repo
+local.properties

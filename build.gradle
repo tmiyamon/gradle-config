@@ -1,53 +1,26 @@
+buildscript {
+    ext {
+        tempRepo = project.rootProject.file('temp_repo')
+        pluginVersion = '0.2.1'
+    }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
 
-plugins {
-    id 'groovy'
-    id 'maven'
-    id "com.gradle.plugin-publish" version "0.9.1"
-}
-
-group 'com.tmiyamon'
-version '0.2.1'
-
-sourceCompatibility = 1.6
-
-repositories {
-    jcenter()
-}
-
-configurations {
-    provided
-}
-
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
-dependencies {
-    compile gradleApi()
-    compile localGroovy()
-    provided 'com.android.tools.build:gradle:1.+'
-    compile 'org.yaml:snakeyaml:1.14'
-}
-
-pluginBundle {
-  website = 'https://github.com/tmiyamon/gradle-config'
-  vcsUrl = 'https://github.com/tmiyamon/gradle-config'
-  description = 'Gradle plugin to add multi-variants yaml settings to Android.'
-  tags = ['gradle', 'plugin', 'android']
-
-  plugins {
-    configPlugin {
-      id = 'com.tmiyamon.config'
-      displayName = 'Gradle Config plugin'
-    }
-  }
-}
-
-install {
-    repositories.mavenInstaller {
-        pom.version = project.version
-        pom.artifactId = 'gradle-config'
+allprojects {
+    repositories {
+        jcenter()
     }
 }
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+

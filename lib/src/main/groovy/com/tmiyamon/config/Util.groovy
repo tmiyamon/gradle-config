@@ -1,7 +1,5 @@
 package com.tmiyamon.config
 
-import org.gradle.api.Project
-
 class Util {
 	public static String camelize(String cmdName, boolean firstUpper = false) {
 

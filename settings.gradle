@@ -1,2 +1,2 @@
+include ':lib', ':sample-app'
 rootProject.name = 'gradle-config'
-
